@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ApexCode | Genshin Impact Top-Up Guide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-light">
+    <div id="ambient-canvas">
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none" class="bg-svg-layer">
+            <defs>
+                <linearGradient id="bg-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" class="stop-color-1" />
+                    <stop offset="50%" class="stop-color-2" />
+                    <stop offset="100%" class="stop-color-3" />
+                </linearGradient>
+                <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" class="glow-stop-center" />
+                    <stop offset="100%" class="glow-stop-edge" />
+                </radialGradient>
+                <filter id="neon-blur" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+                <pattern id="hex-grid" width="40" height="69.282" patternUnits="userSpaceOnUse" patternTransform="scale(0.5)">
+                    <path d="M 40 0 L 20 11.547 L 0 0 L 0 23.094 L 20 34.641 L 40 23.094 Z M 0 34.641 L 20 46.188 L 0 57.735 L 0 80.829 L 20 69.282 L 40 80.829 L 40 57.735 L 20 46.188 Z" class="grid-path" fill="none" stroke-width="1"/>
+                </pattern>
+                <pattern id="circuit-board" width="100" height="100" patternUnits="userSpaceOnUse">
+                    <circle cx="10" cy="10" r="2" class="circuit-node" />
+                    <circle cx="50" cy="80" r="2" class="circuit-node" />
+                    <circle cx="90" cy="40" r="2" class="circuit-node" />
+                    <path d="M10 10 L30 10 L40 20 L40 50 L50 60 L50 80 M40 50 L80 50 L90 40" class="circuit-line" fill="none" stroke-width="0.5" />
+                </pattern>
+                <filter id="glitch-effect">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#bg-grad-1)" />
+            <rect width="100%" height="100%" fill="url(#hex-grid)" opacity="0.3" class="animated-grid" />
+            <rect width="100%" height="100%" fill="url(#circuit-board)" opacity="0.15" class="animated-circuit" />
+            <circle cx="20%" cy="30%" r="300" fill="url(#bg-glow)" filter="url(#neon-blur)" class="floating-orb orb-1" />
+            <circle cx="80%" cy="70%" r="400" fill="url(#bg-glow)" filter="url(#neon-blur)" class="floating-orb orb-2" />
+            <circle cx="50%" cy="10%" r="200" fill="url(#bg-glow)" filter="url(#neon-blur)" class="floating-orb orb-3" />
+            <path d="M-100,50 Q200,150 500,50 T1100,50" class="energy-wave wave-1" fill="none" stroke-width="2" opacity="0.4" />
+            <path d="M-100,150 Q300,50 600,150 T1200,150" class="energy-wave wave-2" fill="none" stroke-width="1.5" opacity="0.3" />
+            <path d="M-100,250 Q400,350 700,250 T1300,250" class="energy-wave wave-3" fill="none" stroke-width="1" opacity="0.2" />
+        </svg>
+    </div>
+
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="logo-wrapper">
+                <div class="logo-outer-ring">
+                    <div class="logo-inner-ring">
+                        <img src="assets/apexlogo.png" alt="ApexCode Logo" class="main-logo" draggable="false">
+                    </div>
+                </div>
+                <div class="logo-text-wrapper">
+                    <span class="logo-text-primary">Apex</span><span class="logo-text-secondary">Code</span>
+                </div>
+            </div>
+            <div class="theme-controls">
+                <button id="theme-btn-light" class="theme-btn active-theme" data-theme="light">
+                    <svg viewBox="0 0 24 24" class="theme-icon"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41.39.39 1.03.39 1.41 0l1.06-1.06z"/></svg>
+                </button>
+                <button id="theme-btn-dark" class="theme-btn" data-theme="dark">
+                    <svg viewBox="0 0 24 24" class="theme-icon"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/></svg>
+                </button>
+                <button id="theme-btn-oled" class="theme-btn" data-theme="oled">
+                    <svg viewBox="0 0 24 24" class="theme-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="nav-progress-bar">
+            <div class="nav-progress-fill"></div>
+        </div>
+    </nav>
+
+    <main class="content-wrapper">
+        <header class="hero-section">
+            <div class="hero-content">
+                <div class="hero-badge">OFFICIAL TOP-UP PROCEDURE</div>
+                <h1 class="hero-title">
+                    <span class="title-word">CodaShop</span>
+                    <span class="title-divider">-</span>
+                    <span class="title-word">How</span>
+                    <span class="title-word">to</span>
+                    <span class="title-word">purchase</span>
+                    <span class="title-word">Genshin</span>
+                    <span class="title-word">Impact</span>
+                    <span class="title-word">Top-Up?</span>
+                </h1>
+                <p class="hero-subtitle">Follow the exact steps below to ensure your transaction is verified, secure, and successfully delivered.</p>
+            </div>
+            <div class="hero-scroll-indicator">
+                <div class="mouse-body">
+                    <div class="mouse-wheel"></div>
+                </div>
+                <div class="scroll-arrows">
+                    <span class="arrow arrow-1"></span>
+                    <span class="arrow arrow-2"></span>
+                    <span class="arrow arrow-3"></span>
+                </div>
+            </div>
+        </header>
+
+        <article class="guide-steps">
+            <section class="step-card" id="step-1">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">01</span>
+                    </div>
+                    <h2 class="step-title">UID and Region Selection</h2>
+                </div>
+                <div class="step-body">
+                    <div class="image-container tilt-effect">
+                        <div class="image-overlay-scanline"></div>
+                        <img src="assets/1.png" alt="UID and Server Selection Interface" class="step-image" draggable="false">
+                        <div class="image-glow-border"></div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            When you enter <a href="https://www.codashop.com/en-us/genshin-impact" target="_blank" rel="noopener noreferrer" class="external-link codashop-link">CodaShop Official Genshin Impact Top Up</a>, this is the first area that will welcome you. Here, enter my UID (<span class="copyable interactive-text uid-text" data-copy="783242241">783242241</span>) as shown in the image, and select the region as Europe. Otherwise, you cannot complete the transaction.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card" id="step-2">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">02</span>
+                    </div>
+                    <h2 class="step-title">Purchasable Items</h2>
+                </div>
+                <div class="step-body">
+                    <div class="multi-image-layout">
+                        <div class="image-container tilt-effect half-width">
+                            <div class="image-overlay-scanline"></div>
+                            <img src="assets/2a.png" alt="Purchasable Items Top Area" class="step-image" draggable="false">
+                            <div class="image-glow-border"></div>
+                        </div>
+                        <div class="image-container tilt-effect half-width">
+                            <div class="image-overlay-scanline"></div>
+                            <img src="assets/2b.png" alt="Purchasable Items Bottom Area" class="step-image" draggable="false">
+                            <div class="image-glow-border"></div>
+                        </div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            When you scroll down a bit on the site, you will see the purchasable items. Here, NEVER EVER buy <strong class="danger-highlight fw-900">Chronal Nexus</strong>! Nexus Crystals are not accepted for purchases. Payment can only be made with <strong class="standard-bold">Blessing of the Welkin Moon</strong> and <strong class="standard-bold">Genesis Crystals</strong>.
+                        </p>
+                        <p class="instruction-text warning-block">
+                            Also, below it currently tells you which product to buy. So, if it says Genesis Crystal below and you buy Blessing of the Welkin Moon, your payment will <strong class="danger-highlight fw-900">NOT BE ACCEPTED</strong>. Therefore, please pay attention to the text below telling you what to buy and buy that.
+                        </p>
+                        
+<!-- ================= -->
+<div class="dynamic-payment-box pulse-animation">
+    <div class="dynamic-inner">
+        <span class="dynamic-label">Current payment option to make:</span>
+        <span class="dynamic-value">Blessing of the Welkin Moon</span>
+    </div>
+    <div class="dynamic-border-fx"></div>
+</div>
+<!-- ================= -->
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card" id="step-3">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">03</span>
+                    </div>
+                    <h2 class="step-title">Payment Selection</h2>
+                </div>
+                <div class="step-body">
+                    <div class="image-container tilt-effect">
+                        <div class="image-overlay-scanline"></div>
+                        <img src="assets/3.png" alt="Payment Selection Area" class="step-image" draggable="false">
+                        <div class="image-glow-border"></div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            A bit further down is the payment selection area. Choose your payment preference from here.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card" id="step-4">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">04</span>
+                    </div>
+                    <h2 class="step-title">Region Code</h2>
+                </div>
+                <div class="step-body">
+                    <div class="image-container tilt-effect">
+                        <div class="image-overlay-scanline"></div>
+                        <img src="assets/4.png" alt="Zip Code Input Area" class="step-image" draggable="false">
+                        <div class="image-glow-border"></div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            Here your region code is requested. The cardholder's region code is entered to proceed to the next stage. I don't know exactly if it's mandatory, if it is, fill it out.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card" id="step-5">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">05</span>
+                    </div>
+                    <h2 class="step-title">Billing</h2>
+                </div>
+                <div class="step-body">
+                    <div class="image-container tilt-effect">
+                        <div class="image-overlay-scanline"></div>
+                        <img src="assets/5.png" alt="Email Entry Area for Billing" class="step-image" draggable="false">
+                        <div class="image-glow-border"></div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            Right below the Zip Code, you are asked to write an E-mail. A receipt will be sent to the E-Mail you wrote. To prevent fraud, you <strong class="danger-highlight fw-900">MUST</strong> write <span class="copyable interactive-text email-text" data-copy="apex.code405@gmail.com">apex.code405@gmail.com</span> here. If the receipt does not come to this Gmail, your payment transaction will be considered invalid.
+                        </p>
+                        <div class="italic-info-block">
+                            <svg class="info-icon" viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                            <p class="italic-text">
+                                (If you want, you can notify me via DM and I can send you the receipt with the receipt code hidden. The reason for not stating the receipt code is to minimize the risk of being scammed. I have no business with your personal information. Already, your personal information will probably not be fully shown on the receipt)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="step-card" id="step-6">
+                <div class="step-header">
+                    <div class="step-number-hexagon">
+                        <span class="step-number-text">06</span>
+                    </div>
+                    <h2 class="step-title">Phone Number Verification and Other</h2>
+                </div>
+                <div class="step-body">
+                    <div class="image-container tilt-effect">
+                        <div class="image-overlay-scanline"></div>
+                        <img src="assets/6.png" alt="Phone Number Verification Modal" class="step-image" draggable="false">
+                        <div class="image-glow-border"></div>
+                    </div>
+                    <div class="text-content">
+                        <p class="instruction-text">
+                            Here your phone number is requested. In the next stage, a verification code is sent. After this, do the necessary procedures. When you make the payment, send me a message via DM, if the receipt has arrived, the payment is complete.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="important-section" id="important-info">
+                <div class="important-header">
+                    <div class="warning-icon-wrapper">
+                        <svg viewBox="0 0 24 24" class="warning-icon"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    </div>
+                    <h1 class="important-main-title">IMPORTANT!</h1>
+                </div>
+                
+                <div class="important-block">
+                    <h2 class="important-subtitle">Mandatory Things Before Payment</h2>
+                    <p class="instruction-text">
+                        Please send me the following message via DM before making your payment. This is a precaution to prevent fraud: 
+                    </p>
+                    <div class="consent-wrapper">
+                        <span class="copyable interactive-text consent-text" data-copy="I [Customer's Name], declare that in exchange for the web software service I received from the developer named ApexCode, I will top up Genesis to UID 783242241 via Codashop with my own consent and my own credit card, and I will not make any stolen/suspicious transaction notification to the bank after this transaction.">
+                            I [Customer's Name], declare that in exchange for the web software service I received from the developer named ApexCode, I will top up Genesis to UID 783242241 via Codashop with my own consent and my own credit card, and I will not make any stolen/suspicious transaction notification to the bank after this transaction.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="important-block">
+                    <h2 class="important-subtitle">Notes</h2>
+                    <p class="instruction-text">
+                        Please do not delete any messages from DM. If you write incorrectly, edit the message but do not delete a message.
+                    </p>
+                </div>
+
+                <div class="important-block">
+                    <h2 class="important-subtitle">FAQ</h2>
+                    <p class="instruction-text">
+                        If there is an extra situation or if you need help, please write to me from DM.
+                    </p>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="assets/apexlogo.png" alt="ApexCode Small Logo" class="footer-img" draggable="false">
+                <span class="footer-brand">ApexCode</span>
+            </div>
+            <div class="footer-line"></div>
+            <p class="footer-rights">© 2026 ApexCode. All transactions are securely monitored.</p>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-hidden">
+        <div class="toast-content">
+            <div class="toast-icon-wrapper">
+                <svg viewBox="0 0 24 24" class="toast-check-icon"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div class="toast-text-wrapper">
+                <span class="toast-title">Copied to Clipboard!</span>
+                <span class="toast-message">The text is ready to be pasted.</span>
+            </div>
+        </div>
+        <div class="toast-glow"></div>
+    </div>
+
+    <script src="sss.js"></script>
+</body>
+</html>
