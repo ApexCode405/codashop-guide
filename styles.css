@@ -1044,7 +1044,7 @@ body.theme-oled .tilt-effect:hover .image-glow-border {
 }
 
 .copyable::before {
-    content: 'select and Copy';
+    content: 'select or click to Copy';
     position: absolute;
     top: -30px;
     left: 50%;
