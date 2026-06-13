@@ -81,8 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = new ToastSystem();
 
     function initTheme() {
-        // Remove any existing theme classes from body to avoid conflicts
-        DOM.body.classList.remove('theme-light', 'theme-dark', 'theme-oled');
         DOM.body.classList.add(state.theme);
         updateThemeButtons();
 
@@ -90,10 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.addEventListener("click", (e) => {
                 const newTheme = e.currentTarget.dataset.theme;
                 if (state.theme !== newTheme) {
-                    // Clear all theme classes and set the new one
-                    DOM.body.classList.remove('theme-light', 'theme-dark', 'theme-oled');
-                    DOM.body.classList.add(newTheme);
+                    DOM.body.classList.remove(state.theme);
                     state.theme = newTheme;
+                    DOM.body.classList.add(state.theme);
                     localStorage.setItem("appTheme", state.theme);
                     updateThemeButtons();
                     toast.show(`Tema değiştirildi: ${newTheme.replace('theme-', '').toUpperCase()}`);
@@ -261,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         e.target.innerText = originalText;
                         e.target.style.background = "";
                         e.target.style.color = "";
-                    }, 3000); // Changed from 2000 to 3000 for 3 seconds
+                    }, 2000);
                 } catch (err) {
                     toast.show("Kopyalama başarısız oldu!", "error");
                 }
