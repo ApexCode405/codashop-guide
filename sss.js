@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // ---------- STATE ----------
     const state = {
-        theme: localStorage.getItem("appTheme") || "theme-dark",
+        theme: "dark",
         isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         scrollPos: 0,
         mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
         canvas: { width: window.innerWidth, height: window.innerHeight }
     };
 
+    // ---------- DOM ----------
     const DOM = {
         body: document.body,
         themeBtns: document.querySelectorAll(".theme-btn"),
@@ -20,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dynamicValue: document.querySelector(".dynamic-value")
     };
 
+    // ---------- CONFIG ----------
     const config = {
         springFactor: 0.1,
         friction: 0.8,
@@ -28,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         numberAnimDuration: 2000
     };
 
+    // ---------- UTILS ----------
     class Utils {
         static lerp(start, end, amt) {
             return (1 - amt) * start + amt * end;
@@ -43,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // ---------- TOAST ----------
     class ToastSystem {
         constructor() {
             this.container = document.getElementById("toast-container");
@@ -70,43 +75,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         show(message, type = "success") {
             clearTimeout(this.timeout);
-            this.msgElement.textContent = message;
+            if (this.msgElement) this.msgElement.textContent = message;
+
+            this.container.classList.remove("toast-hidden");
             this.container.classList.add("toast-visible");
+
             this.timeout = setTimeout(() => {
                 this.container.classList.remove("toast-visible");
+                this.container.classList.add("toast-hidden");
             }, config.toastDuration);
         }
     }
 
     const toast = new ToastSystem();
 
+    // ---------- THEME ----------
+    function applyTheme(themeName) {
+        DOM.body.classList.remove("theme-light", "theme-dark", "theme-oled");
+        DOM.body.classList.add("theme-" + themeName);
+        state.theme = themeName;
+        localStorage.setItem("appTheme", themeName);
+
+        DOM.themeBtns.forEach(btn => {
+            btn.classList.toggle("active-theme", btn.dataset.theme === themeName);
+        });
+    }
+
     function initTheme() {
-        DOM.body.classList.add(state.theme);
-        updateThemeButtons();
+        let saved = localStorage.getItem("appTheme");
+        if (saved && saved.startsWith("theme-")) {
+            saved = saved.replace("theme-", "");
+        }
+        const initialTheme = saved || "dark";
+        applyTheme(initialTheme);
 
         DOM.themeBtns.forEach(btn => {
             btn.addEventListener("click", (e) => {
                 const newTheme = e.currentTarget.dataset.theme;
                 if (state.theme !== newTheme) {
-                    DOM.body.classList.remove(state.theme);
-                    state.theme = newTheme;
-                    DOM.body.classList.add(state.theme);
-                    localStorage.setItem("appTheme", state.theme);
-                    updateThemeButtons();
-                    toast.show(`Tema değiştirildi: ${newTheme.replace('theme-', '').toUpperCase()}`);
+                    applyTheme(newTheme);
                     triggerThemeTransitionEffect(e.clientX, e.clientY);
                 }
             });
-        });
-    }
-
-    function updateThemeButtons() {
-        DOM.themeBtns.forEach(btn => {
-            if (btn.dataset.theme === state.theme) {
-                btn.classList.add("active-theme");
-            } else {
-                btn.classList.remove("active-theme");
-            }
         });
     }
 
@@ -136,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => ripple.remove(), 1000);
     }
 
+    // ---------- SCROLL ----------
     function initScrollEngine() {
         window.addEventListener("scroll", () => {
             state.scrollPos = window.scrollY;
@@ -156,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, { passive: true });
     }
 
+    // ---------- TILT ----------
     function initTiltPhysics() {
         if (!DOM.tiltElements.length) return;
 
@@ -207,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // ---------- OBSERVER ----------
     function initObserver() {
         const observerOptions = {
             root: null,
@@ -222,7 +235,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     entry.target.style.transform = "translateY(0)";
                     obs.unobserve(entry.target);
                     
-                    // Buradaki dinamik fiyat animasyonu kaldırıldı, statik metin korunuyor.
+                    if (entry.target.classList.contains("dynamic-payment-box")) {
+                        animateDynamicValue();
+                    }
                 }
             });
         }, observerOptions);
@@ -236,6 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (paymentBox) observer.observe(paymentBox);
     }
 
+    // ---------- COPY SYSTEM ----------
     function initCopyLogic() {
         DOM.copyables.forEach(item => {
             item.addEventListener("click", async (e) => {
@@ -264,6 +280,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ---------- DYNAMIC VALUE ----------
+    function animateDynamicValue() {
+        if (!DOM.dynamicValue) return;
+
+        const targetAttr = DOM.dynamicValue.getAttribute("data-target");
+        if (targetAttr === null || isNaN(parseFloat(targetAttr))) {
+            return;
+        }
+
+        const targetValue = parseFloat(targetAttr);
+        let startTimestamp = null;
+        
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / config.numberAnimDuration, 1);
+            
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentValue = Utils.lerp(0, targetValue, easeOutQuart);
+            
+            DOM.dynamicValue.textContent = Utils.formatCurrency(currentValue);
+            
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                DOM.dynamicValue.textContent = Utils.formatCurrency(targetValue);
+                DOM.dynamicValue.classList.add("pulse-animation");
+            }
+        };
+        
+        window.requestAnimationFrame(step);
+    }
+
+    // ---------- PARTICLES ----------
     function createParticles(x, y) {
         const particleCount = 12;
         for (let i = 0; i < particleCount; i++) {
@@ -295,6 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // ---------- CANVAS ----------
     class CanvasEngine {
         constructor() {
             this.svgNS = "http://www.w3.org/2000/svg";
@@ -458,6 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ---------- START ----------
     function init() {
         initTheme();
         initScrollEngine();
