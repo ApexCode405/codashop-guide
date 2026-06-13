@@ -222,8 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     entry.target.style.transform = "translateY(0)";
                     obs.unobserve(entry.target);
                     
-                    if (entry.target.classList.contains("dynamic-payment-box")) {
-                        animateDynamicValue();
+//                    if (entry.target.classList.contains("dynamic-payment-box")) {
+//                        animateDynamicValue();
                     }
                 }
             });
