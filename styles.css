@@ -13,6 +13,7 @@
 :root {
     --font-primary: 'Inter', sans-serif;
     --font-secondary: 'Rajdhani', sans-serif;
+    --font-logo: 'Audiowide', cursive;
     
     --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -488,27 +489,53 @@ img {
     object-fit: cover;
 }
 
+/* ============ YENİ LOGO METNİ ============ */
 .logo-text-wrapper {
     display: flex;
     align-items: center;
-    font-family: var(--font-secondary);
+    font-family: var(--font-logo);
     font-size: var(--font-size-2xl);
-    font-weight: 800;
-    letter-spacing: 1px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    gap: 2px;
+    transition: all var(--transition-normal);
 }
 
 .logo-text-primary {
     color: var(--text-primary);
-    transition: color var(--transition-normal);
+    text-shadow: 0 0 12px var(--text-primary);
+    transition: color var(--transition-normal), text-shadow var(--transition-normal);
+}
+
+body.theme-light .logo-text-primary {
+    text-shadow: 0 0 8px rgba(15, 23, 42, 0.4);
 }
 
 .logo-text-secondary {
     color: var(--accent-primary);
-    text-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+    text-shadow: 0 0 14px var(--accent-primary), 0 0 28px var(--accent-primary);
+    transition: color var(--transition-normal), text-shadow var(--transition-normal);
 }
 
 body.theme-oled .logo-text-secondary {
-    text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
+    text-shadow: 0 0 18px var(--accent-primary), 0 0 36px var(--accent-primary), 0 0 54px var(--accent-primary);
+}
+
+/* Mobilde logo metnini gizleme – kaldırıldı, her zaman görünür */
+/* responsive küçültme */
+@media (max-width: 576px) {
+    .logo-text-wrapper {
+        font-size: var(--font-size-lg);
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-text-wrapper {
+        font-size: var(--font-size-md);
+        letter-spacing: 0.5px;
+        gap: 1px;
+    }
 }
 
 .theme-controls {
@@ -1631,7 +1658,6 @@ body.theme-oled #particle-canvas {
     .guide-steps::before { display: none; }
     .step-card { background: var(--bg-secondary); padding: var(--spacing-4); border-radius: var(--border-radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
     .step-header { border-bottom: 1px solid var(--border-color); padding-bottom: var(--spacing-4); margin-bottom: var(--spacing-4); }
-    .logo-text-wrapper { display: none; }
     .important-main-title { font-size: var(--font-size-3xl); }
 }
 
