@@ -222,9 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     entry.target.style.transform = "translateY(0)";
                     obs.unobserve(entry.target);
                     
-//                    if (entry.target.classList.contains("dynamic-payment-box")) {
-//                        animateDynamicValue();
-                    }
+                    // Buradaki dinamik fiyat animasyonu kaldırıldı, statik metin korunuyor.
                 }
             });
         }, observerOptions);
@@ -264,32 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         });
-    }
-
-    function animateDynamicValue() {
-        if (!DOM.dynamicValue) return;
-        
-        const targetValue = parseFloat(DOM.dynamicValue.getAttribute("data-target")) || 1500;
-        let startTimestamp = null;
-        
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / config.numberAnimDuration, 1);
-            
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            const currentValue = Utils.lerp(0, targetValue, easeOutQuart);
-            
-            DOM.dynamicValue.textContent = Utils.formatCurrency(currentValue);
-            
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                DOM.dynamicValue.textContent = Utils.formatCurrency(targetValue);
-                DOM.dynamicValue.classList.add("pulse-animation");
-            }
-        };
-        
-        window.requestAnimationFrame(step);
     }
 
     function createParticles(x, y) {
