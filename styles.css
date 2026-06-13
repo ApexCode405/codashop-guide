@@ -1586,6 +1586,22 @@ body.theme-oled .pulse-animation {
     100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
 }
 
+/* ============ PARTICLE CANVAS ============ */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -4;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+body.theme-oled #particle-canvas {
+    opacity: 0.9;
+}
+
 @media (max-width: 1440px) {
     .nav-container { max-width: 1200px; }
 }
